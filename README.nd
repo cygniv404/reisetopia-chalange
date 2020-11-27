@@ -1,1 +1,8 @@
-# Mern Stack biolerplate 25 Nov 2020.
+## Steps:
+
+`cd backend`
+`npm install`
+`npm run prod`
+`cd frontend`
+`npm install`
+`npm start`

@@ -1,0 +1,24 @@
+[
+    {
+    "id": 1,
+    "hotel_name":"alkatraz",
+    "hotel_description": "this is a hotel description for alkatraz",
+    "rooms": 255
+},
+{
+    "id": 2,
+    "hotel_name":"hilton",
+    "hotel_description": "this is a hotel description for hilton",
+    "rooms": 214
+},{
+    "id": 3,
+    "hotel_name":"orange",
+    "hotel_description": "this is a hotel description for orange",
+    "rooms": 164
+},{
+    "id": 4,
+    "hotel_name":"loisir",
+    "hotel_description": "this is a hotel description for loisir",
+    "rooms": 12
+}
+]
