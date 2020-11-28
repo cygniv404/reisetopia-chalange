@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import React, {useState, useEffect} from 'react';
+import {SearchBox} from './components/SearchBox';
+import {HotelsContainer} from './components/HotelsContainers';
+import {Spinner} from './components/Spinner';
+import Axios from 'axios';
+import {SortByName} from './components/SortByName';
 
-function App() {
+interface ServerResponse{
+  data:ResponseData,
+}
+export interface Hotel{
+  "_id": string,
+  "id": number,
+  "name": string,
+  "address":string,
+  "images":{ url: string, caption: string }[],
+}
+interface ResponseData {
+  success: boolean,
+  error:string,
+  result: Hotel[],
+}
+const App: React.FunctionComponent = () => {
+
+  const [searchTerm, setSearchTerm] = useState<string>('cars');
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [sort,setSort] = useState<boolean>(false);
+
+  const getSearchTerm = (e: React.BaseSyntheticEvent) => {
+    setLoading(true);
+    setSearchTerm(e.target.value);
+  }
+
+  const sortByName = () => {
+    setSort(true);
+  }
+  if (sort){
+      hotels.sort((hotel1,hotel2)=> hotel1.name.toLowerCase().localeCompare(hotel2.name.toLowerCase()));
+  }
+  useEffect(() => {
+    const fetchHotels = async () => {
+        const response : ServerResponse = await Axios.get(`/hotels?search=${searchTerm}`);
+        const filteredHotels : Hotel[] = response.data.result;
+        setHotels(filteredHotels);
+        setLoading(false);
+    }
+    fetchHotels();
+  }, [searchTerm])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <div className="query-section">
+        <SearchBox onSearch={getSearchTerm}/>
+        <SortByName sort={sortByName}/>
+      </div>
+      {loading ? <Spinner / >:<HotelsContainer hotels={hotels}/>}
+    </>
+  )
 }
 
 export default App;
